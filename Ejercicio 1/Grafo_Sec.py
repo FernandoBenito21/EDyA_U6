@@ -65,6 +65,19 @@ class Grafo:
         return d 
     
     def BEP(self, s):
+        visitados = np.full(self.__cant, False, dtype=bool)
+        pila = Pila_Encadenada()
+        pila.Insertar(s)
+        while (pila.Vacia() == False):
+            v = pila.Suprimir()
+            if (visitados[v] == False):
+                visitados[v] = True
+                for u in self.Adyacentes(v):
+                    if (visitados[u] == False):
+                        pila.Insertar(u)
+        return visitados
+    
+    def BEP(self, s):
         visitado = np.full(self.__cant, False, dtype=bool)
         resultado = []
         pila = Pila_Encadenada() 
@@ -105,7 +118,7 @@ class Grafo:
                     P = P[i, j] or (P[i, k] and P[k, j])
         return P
         
-    def Aciclico(self):
+    def Aciclico1(self):
         visitado = np.full(self.__cant, False, dtype=bool)
         for i in range(self.__cant):
             if (visitado[i] == False):
@@ -124,24 +137,32 @@ class Grafo:
                     return True
         return False
     
-    def Conexo(self):
-        visitado = np.full(self.__cant, False, dtype = bool)
-        cola = Cola_Encadenada()
-        cola.Insertar(0)
-        visitado[0] = True
-        cont_visitados = 1
-        while (cola.Vacia() == False):
-            actual = cola.Suprimir()
-            adyacentes = self.Adyacentes(actual)
-            for i in adyacentes:
-                if (visitado[i] == False):
-                    visitado[i] = True
-                    cola.Insertar(i)
-                    cont_visitados += 1
-        if (cont_visitados == self.__cant):
+    def Aciclico(self, v = 0, visitados = None, anterior = -1):
+        if (visitados is None):
+            visitados = np.full(self.__cant, False, dtype = bool)
+            for i in range(self.__cant):
+                if (visitados[i] == False):
+                    if (self.Aciclico(v = 0, visitados = visitados, anterior = -1) == True):
+                        return False
             return True
         else:
+            visitados[v] = True
+            for u in self.Adyacentes(v):
+                if (visitados[u] == False):
+                    if (self.Aciclico(v = u, visitados = visitados, anterior = v) == True):
+                        return True
+                else:
+                    if (u != anterior):
+                        return True
             return False
     
-    
-    
+    def Conexo(self, nodo = 0, visitados = None):
+        if (visitados is None):
+            visitados = np.full(self.__cant, False, dtype = bool)
+            self.Conexo(nodo = 0, visitados = visitados)
+            return all(visitados)
+        else:
+            visitados[nodo] = True
+            for adyacente in self.Adyacentes(nodo):
+                if(visitados[adyacente] == False):
+                    self.Conexo(nodo = adyacente, visitados = visitados)

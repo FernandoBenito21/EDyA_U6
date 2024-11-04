@@ -1,10 +1,10 @@
-from Grafo_Sec import *
+from Dirigido_Sec import *
 import numpy as np
 import random
 
 if __name__ == '__main__':
     cant_nodos = 4
-    grafo1 = Grafo(cant_nodos)
+    grafo1 = Grafo_Dirigido_Sec(cant_nodos)
     op = 1
     while(op != 0):
         print(f"Inserta un par de nodos del 0 al {cant_nodos - 1}")
@@ -23,17 +23,3 @@ if __name__ == '__main__':
         print("El grafo es aciclico")
     else:
         print("El grafo no es aciclico")
-    '''valores = []
-    matriz = np.empty((3, 3), dtype = int)
-    for i in range(3):
-        for j in range(3):
-            numero = random.randint(1, 10)
-            valores.append(numero)
-            matriz[i][j] = numero
-    traspuesta = matriz.transpose()
-    print("Matriz: ")
-    for i in range(3):
-            print(' '.join(map(str, matriz[i])))
-    print("Traspuesta: ")
-    for i in range(3):
-            print(' '.join(map(str, traspuesta[i])))'''

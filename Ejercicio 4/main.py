@@ -23,14 +23,16 @@ if __name__=='__main__':
         print("Opciones: ")
         print("1.Cargar Grafo")
         print("2.Mostrar Orden Topologico")
-        print("3.Ver matriz")
+        print("3.Ver grafo")
         print("0.Salir")
         op = int(input('Ingrese una opcion: '))
         if (op == 1):
             continuar = 1
             while (continuar != 0):
-                u = int(input('Ingrese nodo origen: '))
-                v = int(input('Ingrese nodo destino: '))
+                n1 = input('Ingrese nodo origen: ')
+                u = Conversor(n1)
+                n2 = input('Ingrese nodo destino: ')
+                v = Conversor(n2)
                 grafo.Insertar(u, v)
                 continuar = int(input('Continuar? 0 para no, cualquier otro para si: '))
         elif (op == 2):
@@ -42,4 +44,5 @@ if __name__=='__main__':
             print("Al revés: ")
             grafo.Ordenacion_Topologica(v, marca)
         elif (op == 3):
-            grafo.Mostrar()                                                                                                                                                                                                                                                              
+            grafo.Mostrar()
+            grafo.Mostrar_2()

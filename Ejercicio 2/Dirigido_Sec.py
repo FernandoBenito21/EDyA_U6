@@ -99,7 +99,7 @@ class Grafo_Dirigido_Sec:
             if (visitados[v] == False):
                 self.BEP_C(v, visitados)
     
-    def Aciclico(self):
+    def Aciclico2(self):
         visitado = np.full(self.__cant, False, dtype=bool)
         pila = np.full(self.__cant, False, dtype=bool)
         for i in range(self.__cant):
@@ -121,7 +121,29 @@ class Grafo_Dirigido_Sec:
         pila[v] = False
         return False
     
-    def Conexo(self):
+    def Aciclico(self, v = 0, visitados = None, pila = None):
+        if (visitados is None):
+            visitados = np.full(self.__cant, False, dtype = bool)
+            pila = np.full(self.__cant, False, dtype = bool)
+            for i in range(self.__cant):
+                if (visitados[i] == False):
+                    if (self.Aciclico(v = 0, visitados = visitados, pila = pila) == True):
+                        return False
+            return True
+        else:
+            visitados[v] = True
+            pila[v] = True
+            for u in self.Adyacentes(v):
+                if (visitados[u] == False):
+                    if (self.Aciclico(v = u, visitados = visitados, pila = pila) == True):
+                        return True
+                else:
+                    if(pila[u] == True):
+                        return True
+            pila[v] = False
+            return False
+    
+    def Conexo3(self):
         visitados = np.full(self.__cant, False, dtype = bool)
         self.BEP_C(0, visitados)
         if (all(visitados) == False):
@@ -140,23 +162,49 @@ class Grafo_Dirigido_Sec:
             else:
                 print("El grafo es simple conexo")
             return True
-        '''para BEP_2:
-        visitados = self.BEP_2(0)
-        if (len(visitados) == self.__cant):
-            fuerte = True
-            i = 1
-            while (i < self.__cant) and (fuerte == True):
-                visitados = self.BEP_2(i)
-                if (len(visitados) < self.__cant):
-                    fuerte = False
-                i += 1
-            if (fuerte == True):
+    
+    def BEP_Conexo(self, nodo, visitados, matriz):
+        visitados[nodo] = True
+        for j in range(self.__cant):
+            if[matriz[nodo, j] == 1] and [visitados[j] == False]:
+                self.BEP_Conexo(j, visitados, matriz)
+    
+    def Conexo_2(self):
+        visitados = np.full(self.__cant, False, dtype = bool)
+        self.BEP_Conexo(0, visitados, self.__matriz)
+        if (all(visitados) == True):
+            visitados.fill(False)
+            traspuesta = self.__matriz.transpose()
+            self.BEP_Conexo(0, visitados, traspuesta)
+            if (all(visitados) == True):
                 print("El grafo es fuertemente conexo")
             else:
                 print("El grafo es simple conexo")
             return True
         else:
-            return False'''
+            return False
+    
+    def Conexo(self, nodo = 0, visitados = None, matriz = None):
+        if (matriz is None):
+            matriz = self.__matriz
+            visitados = np.full(self.__cant, False, dtype = bool)
+            self.Conexo(nodo = 0, visitados = visitados, matriz = matriz)
+            if (all(visitados) == True):
+                visitados.fill(False)
+                traspuesta = matriz.transpose()
+                self.Conexo(nodo = 0, visitados = visitados, matriz = traspuesta)
+                if(all(visitados) == True):
+                    print("El grafo es fuertemente conexo")
+                else:
+                    print("El grafo es simple conexo")
+                return True
+            else:
+                return False
+        else:
+            visitados[nodo] = True
+            for j in range(self.__cant):
+                if (matriz[nodo, j] != 0) and (visitados[j] == False):
+                    self.Conexo(nodo = j, visitados = visitados, matriz = matriz)
     
     def GradEnt(self, u):
         grado = 0

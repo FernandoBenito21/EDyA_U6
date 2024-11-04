@@ -65,7 +65,8 @@ class Grafo_Encadenado:
         cola.Insertar(s)
         while (cola.Vacia() == False):
             v = cola.Suprimir()
-            for u in self.Adyacentes(v):
+            for adyacente in self.Adyacentes(v):
+                u = adyacente.getDato()
                 if (d[u] == -1):
                     d[u] = d[v] + 1
                     cola.Insertar(u)
@@ -81,7 +82,8 @@ class Grafo_Encadenado:
             if (visitado[v] == False): 
                 visitado[v] = True
                 resultado.append(v)
-                for u in self.Adyacentes(v):
+                for adyacente in self.Adyacentes(v):
+                    u = adyacente.getDato()
                     if (visitado[u] == False):
                         pila.Insertar(u)
         return resultado
@@ -98,7 +100,8 @@ class Grafo_Encadenado:
     def BEP_Visita(self, s, d, f, tiempo):
         tiempo[0] += 1
         d[s] = tiempo[0]
-        for u in self.Adyacentes(s):
+        for adyacente in self.Adyacentes(s):
+            u = adyacente.getDato()
             if (d[u] == 0):
                 self.BEP_Visita(u, d, f, tiempo)
         tiempo[0] += 1
@@ -132,7 +135,8 @@ class Grafo_Encadenado:
         while (cola.Vacia() == False):
             actual = cola.Suprimir()
             adyacentes = self.Adyacentes(actual)
-            for i in adyacentes:
+            for adyacente in adyacentes:
+                i = adyacente.getDato()
                 if (visitado[i] == False):
                     visitado[i] = True
                     cola.Insertar(i)

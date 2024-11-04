@@ -17,12 +17,13 @@ def Conversor(char):
     return num
 
 if __name__=='__main__':
-    grafo = Ponderado_Encadenado(6)
+    grafo = Grafo_Ponderado_Sec(6)
     op = 1
     while (op != 0):
         print("Opciones: ")
         print("1.Cargar Grafo")
         print("2.Revisar Costo")
+        print("3.Ver grafo")
         print("0.Salir")
         op = int(input('Ingrese una opcion: '))
         if (op == 1):
@@ -41,4 +42,8 @@ if __name__=='__main__':
             b = input('Ingrese el destinatario: ')
             v = Conversor(b)
             grafo.Procesa_Dijkstra(u, v)
+        elif (op == 3):
+            grafo.Mostrar()
+            if (isinstance(grafo, Grafo_Ponderado_Sec)):
+                grafo.Mostrar_2()
             

@@ -14,6 +14,34 @@ class Nodo:
 
     def setSig(self, sig):
         self.__sig = sig
+
+class Vertice:
+    def __init__(self, vertice):
+        self.__vertice = vertice
+        self.__entrada = 0
+        self.__salida = 0
+        self.__sig = None
+    
+    def setSig(self, sig):
+        self.__sig = sig
+    
+    def getSig(self):
+        return self.__sig
+    
+    def getVertice(self):
+        return self.__vertice
+    
+    def sumaEntrada(self):
+        self.__entrada += 1
+    
+    def sumaSalida(self):
+        self.__salida += 1
+    
+    def getEntrada(self):
+        return self.__entrada
+    
+    def getSalida(self):
+        return self.__salida
     
 class Reg_Dijkstra:
     __conocido : bool

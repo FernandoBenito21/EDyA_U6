@@ -20,10 +20,11 @@ class Ponderado_Encadenado:
     def Mostrar(self):
         print("Lista de adyacencia: ")
         for i in range(self.__cant):
-            print(f"Nodo {i}: ")
-            aux =self.__lista[i]
+            n1 = self.Convertir(i)
+            aux = self.__lista[i]
             while (aux != None):
-                print(f"{aux.getDato()}")
+                n2 = self.Convertir(aux.getDato())
+                print(f"{n1} -{aux.getPeso()} -> {n2}")
                 aux = aux.getSig()
     
     def Adyacentes(self, u):
@@ -33,70 +34,6 @@ class Ponderado_Encadenado:
             adyacentes.append(aux)
             aux = aux.getSig()
         return adyacentes
-    
-    def Camino(self, u, v):
-        d = self.BEA(u)
-        if (d[v] == -1):
-            print(f"El nodo {v} no es alcanzable desde el nodo {u}.")
-        else:
-            print(f"El camino de {u} a {v}")
-            peso = 0
-            aux = self.__lista[u]
-            while (aux.getItem() != v):
-                print(f"{aux.getItem()}")
-                peso += aux.getPeso()
-                aux = aux.getSig()
-            print(f"{aux.getItem()}")
-            peso += aux.getPeso()
-            print(f"Peso total: {peso}")
-    
-    def BEA(self, s):
-        d = np.empty(self.__cant, dtype = int)
-        cola = Cola_Encadenada()
-        for i in range(self.__cant):
-            d[i] = -1
-        d[s] = 0
-        cola.Insertar(s)
-        while (cola.Vacia() == False):
-            v = cola.Suprimir()
-            for u in self.Adyacentes(v):
-                if (d[u] == -1):
-                    d[u] = d[v] + 1
-                    cola.Insertar(u)
-        return d 
-    
-    def BEP(self, s):
-        visitado = np.full(self.__cant, False, dtype=bool)
-        resultado = []
-        pila = Pila_Encadenada() 
-        pila.Insertar(s)
-        while (pila.Vacia() == False):  
-            v = pila.Suprimir()  
-            if (visitado[v] == False): 
-                visitado[v] = True
-                resultado.append(v)
-                for u in self.Adyacentes(v):
-                    if (visitado[u] == False):
-                        pila.Insertar(u)
-        return resultado
-    
-    def BEP_2(self):
-        d = np.full(self.__cant, 0, dtype=int)  
-        f = np.full(self.__cant, 0, dtype=int)
-        tiempo = [0]
-        for s in range(self.__cant):
-            if d([s] == 0):
-                self.BEP_Visita(s, d, f, tiempo)
-        return d, f
-
-    def BEP_Visita(self, s, d, f, tiempo):
-        tiempo[0] += 1
-        d[s] = tiempo[0]
-        for u in self.Adyacentes(s):
-            if (d[u] == 0):
-                self.BEP_Visita(u, d, f, tiempo)
-        tiempo[0] += 1
-        f[s] = tiempo[0]
     
     def Dijkstra(self, inicial):
         T = [Reg_Dijkstra() for _ in range(self.__cant)]
